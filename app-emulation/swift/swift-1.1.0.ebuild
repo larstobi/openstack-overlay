@@ -24,6 +24,7 @@ dev-python/simplejson
 dev-python/pyxattr
 dev-python/nose
 dev-python/sphinx
+dev-python/eventlet
 "
 DEPEND="${RDEPEND}
 "
