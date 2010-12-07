@@ -1,6 +1,5 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-python/notify-python/notify-python-0.1.1-r1.ebuild,v 1.17 2010/09/19 17:03:49 armin76 Exp $
 
 EAPI="3"
 PYTHON_DEPEND="2"
