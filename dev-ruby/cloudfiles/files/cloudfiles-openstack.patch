@@ -1,0 +1,47 @@
+diff -ur cloudfiles-1.4.10/lib/cloudfiles/authentication.rb cloudfiles-gem//lib/cloudfiles/authentication.rb
+--- cloudfiles-1.4.10/lib/cloudfiles/authentication.rb	1970-01-01 01:00:00.000000000 +0100
++++ cloudfiles-gem//lib/cloudfiles/authentication.rb	2010-12-14 10:47:23.920006621 +0100
+@@ -23,10 +23,6 @@
+       end
+       response = server.get(path,hdrhash)
+       if (response.code == "204")
+-        connection.cdnmgmthost   = URI.parse(response["x-cdn-management-url"]).host
+-        connection.cdnmgmtpath   = URI.parse(response["x-cdn-management-url"]).path
+-        connection.cdnmgmtport   = URI.parse(response["x-cdn-management-url"]).port
+-        connection.cdnmgmtscheme = URI.parse(response["x-cdn-management-url"]).scheme
+         connection.storagehost   = set_snet(connection,URI.parse(response["x-storage-url"]).host)
+         connection.storagepath   = URI.parse(response["x-storage-url"]).path
+         connection.storageport   = URI.parse(response["x-storage-url"]).port
+diff -ur cloudfiles-1.4.10/lib/cloudfiles/connection.rb cloudfiles-gem//lib/cloudfiles/connection.rb
+--- cloudfiles-1.4.10/lib/cloudfiles/connection.rb	1970-01-01 01:00:00.000000000 +0100
++++ cloudfiles-gem//lib/cloudfiles/connection.rb	2010-12-14 10:06:19.710005401 +0100
+@@ -259,6 +259,10 @@
+ 
+     # This method actually makes the HTTP calls out to the server
+     def cfreq(method,server,path,port,scheme,headers = {},data = nil,attempts = 0,&block) # :nodoc:
++      if server == nil
++        return ""
++      end
++
+       start = Time.now
+       headers['Transfer-Encoding'] = "chunked" if data.is_a?(IO)
+       hdrhash = headerprep(headers)
+diff -ur cloudfiles-1.4.10/lib/cloudfiles/container.rb cloudfiles-gem//lib/cloudfiles/container.rb
+--- cloudfiles-1.4.10/lib/cloudfiles/container.rb	1970-01-01 01:00:00.000000000 +0100
++++ cloudfiles-gem//lib/cloudfiles/container.rb	2010-12-14 10:49:09.370006254 +0100
+@@ -1,3 +1,4 @@
++# -*- coding: utf-8 -*-
+ module CloudFiles
+   class Container
+     # See COPYING for license information.
+@@ -41,10 +42,6 @@
+       @storagepath = self.connection.storagepath + "/" + URI.encode(@name).gsub(/&/,'%26')
+       @storageport = self.connection.storageport
+       @storagescheme = self.connection.storagescheme
+-      @cdnmgmthost = self.connection.cdnmgmthost
+-      @cdnmgmtpath = self.connection.cdnmgmtpath + "/" + URI.encode(@name).gsub(/&/,'%26')
+-      @cdnmgmtport = self.connection.cdnmgmtport
+-      @cdnmgmtscheme = self.connection.cdnmgmtscheme
+       populate
+     end
+ 
